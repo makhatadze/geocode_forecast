@@ -3,32 +3,33 @@ const express = require('express')
 
 const vito = express()
 
+//define paths for Express
 const publicDirectoryPath = path.join(__dirname, '../public')
+const viewsPath = path.join(__dirname, '../templates')
 
+// Setup handlebars engine and views location
+vito.set('view engine', 'hbs')
+vito.set('views',viewsPath)
 
-
+// Setup static directory to serve
 vito.use(express.static(publicDirectoryPath))
 
 vito.get('', (req, res) => {
-    res.send('<h1>Weather</h1>')
+    res.render('index', {
+        title: 'Weather app',
+        name: 'Andrew mead'
+    })
 })
-
-vito.get('/help', (req, res) => {
-    res.send([{
-        name: 'Andrew',
-        age: 25
-    },{
-        name: 'vito',
-        age: 21
-    }
-])
-})
-
 vito.get('/about', (req, res) => {
-        res.send('<h1>About</h1>')
+    res.render('about',{
+        title: 'About Me',
+        name: 'Andrew Mead'
+    })
 })
-vito.get('/weather', (req, res) => {
-    res.send('weather')
+vito.get('/help', (req, res) => {
+    res.render('help', {
+        helpText: 'This is some'
+    })
 })
 
 vito.listen(3000, () => {
